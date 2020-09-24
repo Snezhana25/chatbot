@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
+import { Switch, Route } from 'react-router-dom';
+
 import './App.css';
+import Navbar from './components/Navbar';
+import useStore from "./hooks/store"
+import ListPage from './pages/ListPage';
 
 function App() {
+    const { state, actions } = useStore();
+
+    console.log("state app", state);
+
+    useEffect(() => {
+       actions.getList();
+    }, [actions]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+        <Navbar list={state.lists}/>
+        <Switch>
+            <Route path='/page1'  component={ListPage}/>
+            <Route path='/page2'  component={ListPage}/>
+        </Switch>
+    </>
   );
 }
 
